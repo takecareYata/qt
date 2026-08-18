@@ -211,3 +211,42 @@ QImage MainWindow::matToQImage(const cv::Mat &mat)
 
     return QImage();
 }
+void MainWindow::on_btnServoOn_clicked()
+{
+    if (serial->isOpen()) {
+        serial->write("servo on\n");
+        currentLedState = LED_OFF_STATE;
+        qDebug() << "[Manual UI] Sent: 'led toggle'";
+    }
+}
+
+
+void MainWindow::on_btnServoOff_clicked()
+{
+    if (serial->isOpen()) {
+        serial->write("servo off\n");
+        currentLedState = LED_OFF_STATE;
+        qDebug() << "[Manual UI] Sent: 'led toggle'";
+    }
+}
+
+
+void MainWindow::on_btnCheckBlue_clicked()
+{
+    if (serial->isOpen()) {
+        serial->write("check blue\n");
+        currentLedState = LED_ON_STATE;
+        qDebug() << "[Manual UI] Sent: 'led toggle'";
+    }
+}
+
+
+void MainWindow::on_btnCheckRed_clicked()
+{
+    if (serial->isOpen()) {
+        serial->write("check red\n");
+        currentLedState = LED_OFF_STATE;
+        qDebug() << "[Manual UI] Sent: 'led toggle'";
+    }
+}
+

@@ -27,6 +27,14 @@ private slots:
 
     void on_btnLedToggle_clicked();
 
+    void on_btnServoOn_clicked();
+
+    void on_btnServoOff_clicked();
+
+    void on_btnCheckBlue_clicked();
+
+    void on_btnCheckRed_clicked();
+
 private:
     Ui::MainWindow *ui;
 
