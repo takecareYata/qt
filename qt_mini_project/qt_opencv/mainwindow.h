@@ -2,9 +2,10 @@
 #define MAINWINDOW_H
 
 #include <QMainWindow>
-#include <QTimer>
 #include <QSerialPort>
 #include <QSerialPortInfo>
+#include <QTimer>
+#include <QEvent> // QEvent 헤더 추가
 #include <opencv2/opencv.hpp>
 
 QT_BEGIN_NAMESPACE
@@ -19,35 +20,34 @@ public:
     MainWindow(QWidget *parent = nullptr);
     ~MainWindow();
 
+protected:
+    // 콤보박스 클릭 감지를 위한 이벤트 필터 재정의
+    bool eventFilter(QObject *watched, QEvent *event) override;
+
 private slots:
-    void processFrame();                   // 카메라 프레임 처리 및 영상 인식
-    void on_btnLedOn_clicked();            // "led on" 버튼 클릭 핸들러
-    void on_pushButton_clicked();          // "led off" 버튼 클릭 핸들러
-    void readSerialData();                 // STM32로부터 받는 수신 데이터(printf) 읽기
-
+    void processFrame();
+    void readSerialData();
+    void on_btnLedOn_clicked();
+    void on_pushButton_clicked();
     void on_btnLedToggle_clicked();
-
     void on_btnServoOn_clicked();
-
     void on_btnServoOff_clicked();
-
     void on_btnCheckBlue_clicked();
-
     void on_btnCheckRed_clicked();
+    void on_btnConnect_clicked();
 
 private:
     Ui::MainWindow *ui;
-
-    cv::VideoCapture cap;
-    QTimer *timer;
     QSerialPort *serial;
+    QTimer *timer;
+    cv::VideoCapture cap;
 
-    // 시리얼 명령 폭주 방지를 위한 상태 관리
-    enum LedState { LED_UNKNOWN, LED_OFF_STATE, LED_ON_STATE, LED_TOGGLE_STATE };
-    LedState currentLedState = LED_UNKNOWN;
-
+    void updateSerialPorts();
     void sendLedCommand(bool turnOn);
     QImage matToQImage(const cv::Mat &mat);
+
+    enum LedState { LED_OFF_STATE, LED_ON_STATE, LED_TOGGLE_STATE };
+    LedState currentLedState = LED_OFF_STATE;
 };
 
 #endif // MAINWINDOW_H
